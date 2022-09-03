@@ -1,6 +1,6 @@
 (function($) {
 	"use strict";
-	
+
 		//muti
 		window.asd = $('.SlectBox').SumoSelect({ csvDispCount: 3, selectAll:true, captionFormatAllSelected: "Yeah, OK, so everything." });
         window.Search = $('.search-box').SumoSelect({ csvDispCount: 3, search: true, searchText:'Enter here.' });
@@ -10,9 +10,9 @@
 		$('.select1').SumoSelect({ okCancelInMulti: true, selectAll: true });
 		$('.select3').SumoSelect({ selectAll: true });
 		$('.search_test').SumoSelect({search: true, searchText: 'Enter here.'});
-		
-		
-		//transfer
+
+
+		// transfer
 		var languages = [
 			{
 				"language": "jQuery",
@@ -124,19 +124,19 @@
 			}
 		};
 		Transfer.transfer(settings);
-		
+
 		//select box
 		var select = document.getElementById('fruit_select');
 		multi(select, {
 			non_selected_header: 'Fruits',
 			selected_header: 'Favorite fruits'
 		});
-		
+
 		var select = document.getElementById('fruit_select1');
 		multi(select, {
 			enable_search: true
 		} );
-		
+
 		//fancyfileuplod
 		$('#demo').FancyFileUpload({
 		params : {
@@ -145,5 +145,5 @@
 			maxfilesize : 1000000
 		});
 
-		
+
 })(jQuery);

@@ -29,6 +29,7 @@
 
     <!--- FONT-ICONS CSS -->
     <link href="{{ url('assets/css/icons.css') }}" rel="stylesheet" />
+    <link href="{{ url('assets/css/bootstrap-duallistbox.css') }}" rel="stylesheet" />
 
     <!-- COLOR SKIN CSS -->
     <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ url('assets/colors/color1.css') }}" />
@@ -108,8 +109,8 @@
                                 alt="logo">
                             <img src="{{ url('assets/images/brand/logo-1.png') }}" class="header-brand-img toggle-logo"
                                 alt="logo">
-                            <img src="{{ url('assets/images/brand/logo-1.png') }}" class="header-brand-img light-logo"
-                                alt="logo">
+                            <img src="{{ url('assets/images/brand/logo-1.png') }}"
+                                class="header-brand-img light-logo" alt="logo">
                             <img src="{{ url('assets/images/brand/logo-3.png') }}"
                                 class="header-brand-img light-logo1" alt="logo">
                         </a>
@@ -347,6 +348,7 @@
 
     <!-- CUSTOM JS -->
     <script src="{{ url('assets/js/custom.js') }}"></script>
+    <script src="{{ url('assets/js/jquery.bootstrap-duallistbox.js') }}"></script>
 
     @yield('script')
 </body>

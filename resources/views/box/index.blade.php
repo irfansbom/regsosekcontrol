@@ -13,6 +13,7 @@
                         </ol>
                     </div>
                 </div>
+                @include('alert')
                 <div class="row">
                     <div class="col-12 col-sm-12">
                         <div class="card ">
@@ -86,7 +87,7 @@
                                                     <tr class="align-middle">
                                                         <td class="text-center align-middle">
                                                             {{ ++$key }}</td>
-                                                        <td class="align-middle">
+                                                        <td class="align-middle text-center">
                                                             {{ $dt->id_kab }}
                                                         </td>
                                                         <td class="align-middle">
@@ -95,11 +96,18 @@
                                                         <td class="align-middle">
                                                             {{ $dt->nama }}
                                                         </td>
-                                                        <td class="align-middle">
-                                                            <button class="btn btn-outline-warning btn-sm btn_edit">
+                                                        <td class="align-middle text-center">
+                                                            <a href="{{ url('box_besar/' . $dt->id) }}"
+                                                                class="btn btn-sm btn-outline-info"><i
+                                                                    class="fa fa-eye"></i></a>
+                                                            <button class="btn btn-outline-warning btn-sm btn_edit"
+                                                                data-bs-target="#modal_edit" data-bs-toggle="modal"
+                                                                data-id="{{ $dt->id }}">
                                                                 <i class="fa fa-pencil"></i>
                                                             </button>
-                                                            <button class="btn btn-outline-danger btn-sm btn_hapus">
+                                                            <button class="btn btn-outline-danger btn-sm btn_hapus"
+                                                                data-bs-target="#modal_hapus" data-bs-toggle="modal"
+                                                                data-id="{{ $dt->id }}">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </td>
@@ -120,18 +128,20 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Hapus User<span></span></h4>
+                        <h4 class="modal-title">Hapus<span></span></h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ url('users/delete') }}" method="post" id="form_hapus">
+                        <form action="{{ url('box_besar/delete') }}" method="post" id="form_hapus">
                             @csrf
+                            @method('delete')
                             <div class="row ">
-                                <input type="text" name="user_id" id="user_id" hidden>
-                                <div class="mb-3 ">
+                                <input type="text" name="id" id="hapus_id" hidden>
+                                <h6>Hapus box ini?</h6>
+                                {{-- <div class="mb-3 ">
                                     <label for="nama_user" class="form-label">Nama user</label>
                                     <input type="text" class="form-control" id="user_name" name="nama" readonly>
-                                </div>
+                                </div> --}}
                             </div>
                         </form>
                     </div>
@@ -200,9 +210,7 @@
     @section('script')
         <script>
             $('.btn_hapus').click(function() {
-                console.log($(this).data("id"))
-                $('#modal_hapus').find('#user_id').val($(this).data("id"));
-                $('#modal_hapus').find('#user_name').val($(this).data("nama"));
+                $('#modal_hapus').find('#hapus_id').val($(this).data("id"));
             })
 
             $(document).ready(function() {
