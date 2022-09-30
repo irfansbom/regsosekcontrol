@@ -9,7 +9,8 @@
                         <h1 class="page-title">BOX {{ $box->nama }}</h1>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0);">Box</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">List SLS</li>
+                            <li class="breadcrumb-item"><a href="{{ url('box_besar') }}">List</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ $box->nama }}</li>
                         </ol>
                     </div>
                 </div>
@@ -32,9 +33,12 @@
                                                     <select multiple="multiple" name="id_sls[]">
                                                         @foreach ($data as $dt)
                                                             <option value="{{ $dt->id }}"
-                                                                @if ($dt->no_box == $box->nama) selected @endif>
+                                                                @if ($dt->no_box == $box->id) selected @endif>
                                                                 <pre>
-                                                                {{ $dt->id_sls }} - {{ $dt->kues }} - {{ $dt->set }} - {{ $dt->no_box }}
+                                                                {{ $dt->id_sls }} - {{ $dt->kues }} - {{ $dt->set }} -
+                                                                @isset($dt->box)
+{{ $dt->box->nama }}
+@endisset
                                                                 </pre>
                                                             </option>
                                                         @endforeach
@@ -73,8 +77,8 @@
                 var demo1 = $('select[name="id_sls[]"]').bootstrapDualListbox({
                     nonSelectedListLabel: 'List Dokumen',
                     selectedListLabel: 'Dokument Terpilih',
-                    preserveSelectionOnMove: 'moved',
-                    moveOnSelect: false
+                    // preserveSelectionOnMove: 'moved',
+                    // moveOnSelect: false
                 });
             });
         </script>

@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Box extends Model
 {
     use HasFactory;
-    protected $table="box";
-    protected $guarded=[];
+    protected $table = "box";
+    protected $guarded = [];
+
+
+    function p_kabkot()
+    {
+        return $this->hasMany(P_Kabkot::class, 'no_box', 'id');
+    }
 }

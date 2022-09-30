@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndikatorController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\KuesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\P_KabkotController;
 use App\Http\Controllers\P_KosekaController;
@@ -35,9 +36,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('p_provinsi', P_ProvController::class);
 
     Route::resource('box_besar', BoxController::class);
+    Route::get('printbox/{id}', [BoxController::class, 'printbox']);
 });
 
-Route::group(['middleware' => ['role:SUPER ADMIN|ADMIN PROVINSI|ADMIN KABKOT']], function () {
+Route::group(['middleware' => ['role:SUPER ADMIN|ADMIN PROVINSI|ADMIN KABKOT', 'auth']], function () {
+
+    Route::resource('kues', KuesController::class);
+
     Route::get('users', [UserController::class, 'index']);
     Route::get('users/create', [UserController::class, 'create']);
     Route::post('users/store', [UserController::class, 'store']);
@@ -47,7 +52,7 @@ Route::group(['middleware' => ['role:SUPER ADMIN|ADMIN PROVINSI|ADMIN KABKOT']],
     Route::post('/users/roles', [UserController::class, 'user_roles']);
     Route::post('/users/ubahpassword', [UserController::class, 'ubahpassword']);
 });
-Route::group(['middleware' => ['role:SUPER ADMIN']], function () {
+Route::group(['middleware' => ['role:SUPER ADMIN', 'auth']], function () {
     Route::get('roles', [UserController::class, 'roles']);
     Route::post('roles/add', [UserController::class, 'roles_add']);
     Route::post('roles/edit', [UserController::class, 'roles_edit']);

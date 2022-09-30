@@ -79,8 +79,8 @@
                                         <thead>
                                             <tr class="text-center align-middle">
                                                 <th>No</th>
+                                                <th>KAB</th>
                                                 <th>Nama</th>
-                                                <th>Instansi</th>
                                                 <th>Email</th>
                                                 <th colspan="2">Roles</th>
                                                 <th style="width: 8%">Aksi</th>
@@ -88,13 +88,11 @@
                                         </thead>
                                         <tbody class="align-middle">
                                             @foreach ($user as $key => $usr)
-                                                <tr class="align-middle">
-                                                    <td class="text-center align-middle">{{ ++$key }}</td>
-                                                    <td class="align-middle">
-                                                        {{ $usr->name }}
-                                                    </td>
-                                                    <td class="align-middle">{{ $usr->instansi }}</td>
-                                                    <td class="align-middle"
+                                                <tr class="align-middle text-center">
+                                                    <td class="align-middle">{{ ++$key }}</td>
+                                                    <td class="align-middle">{{ $usr->kd_wilayah }}</td>
+                                                    <td class="align-middle text-start"> {{ $usr->name }} </td>
+                                                    <td class="align-middle text-start"
                                                         style="word-break: break-word; overflow-wrap: break-word;">
                                                         {{ $usr->email }}</td>
                                                     <td class="align-middle">
@@ -104,10 +102,10 @@
                                                             @endforeach
                                                         </ul>
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td class="">
                                                         @if (in_array('SUPER ADMIN', $auth->getRoleNames()->toArray()))
                                                             <button
-                                                                class="btn btn-outline-secondary btn_roles"data-bs-toggle="modal"
+                                                                class="btn btn-outline-secondary btn_roles btn-sm"data-bs-toggle="modal"
                                                                 data-bs-target="#modal_edit_roles"
                                                                 data-id="{{ $usr->id }}"
                                                                 data-roles="{{ $usr->roles }}"
@@ -115,16 +113,17 @@
                                                                 <i class="fa fa-pencil"></i>
                                                             </button>
                                                         @else
-                                                            <button class="btn btn-outline-secondary"> <i
-                                                                    class="fa fa-pencil"></i></button>
+                                                            <button class="btn btn-outline-secondary"><i
+                                                                    class="fa fa-pencil"></i>
+                                                            </button>
                                                         @endif
                                                     </td>
-                                                    <td class="text-center">
-                                                        <a class="btn btn-outline-primary "
+                                                    <td class="">
+                                                        <a class="btn btn-outline-primary btn-sm"
                                                             href="{{ url('users/' . \Crypt::encryptString($usr->id)) }}">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
-                                                        <button class="btn btn-outline-danger  btn_hapus"
+                                                        <button class="btn btn-outline-danger btn_hapus btn-sm"
                                                             data-id="{{ $usr->id }}" data-nama="{{ $usr->name }}"
                                                             data-bs-toggle="modal" data-bs-target="#modal_hapus">
                                                             <i class="fa fa-trash"></i>

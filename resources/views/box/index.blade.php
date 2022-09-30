@@ -19,12 +19,12 @@
                         <div class="card ">
                             <div class="card ">
                                 <div class="card-header border-0 pb-0">
-                                    <h3 class="card-title mb-0">List DS BS</h3>
+                                    <h3 class="card-title mb-0">List Box</h3>
                                     <div class="ms-auto pageheader-btn">
                                         @hasanyrole(['SUPER ADMIN|ADMIN PROVINSI|ADMIN KABKOT'])
                                             <div class="btn-group mt-2 mb-2">
                                                 <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                                    data-bs-target="#modal_tambah">Tambah Dokumen Diterima</button>
+                                                    data-bs-target="#modal_tambah">Tambah Box Besar</button>
                                             </div>
                                         @endhasanyrole
                                     </div>
@@ -32,8 +32,12 @@
                                 <div class="card-header pt-0 d-flex justify-content-center">
                                     <div class="row col">
                                         <div class="alert alert-info" role="alert">
-                                            List Dibawah ini merupakan satu set dokumen per kuesionernya yang telah diterima
-                                            BPS Kabkot dari hasil pendataan lapangan </div>
+                                            <ul>
+                                                <li>List Box Besar(Kardus) dan dokumen didalamnya</li>
+                                                <li>Tekan tombol icon print pada sebelah nama box untuk mencetak label untuk
+                                                    box besar</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -42,7 +46,6 @@
                                             <form action="" id="form_filter">
                                                 <fieldset>
                                                     <div class="mb-1 row">
-                                                        {{-- <label for="kab_filter" class="col-sm-2 col-form-label">Kab/Kot</label> --}}
                                                         <div class="col-sm-3">
                                                             <select name="kab_filter" id="kab_filter"
                                                                 class="form-control select2-show-search form-select">
@@ -57,11 +60,11 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        {{-- <div class="col-sm-2">
-                                                            <input type="text" name="sls_filter" id="sls_filter"
-                                                                placeholder="cari ID SLS" class="form-control"
-                                                                @if ($request->sls_filter) value="{{ $request->sls_filter }}" @endif>
-                                                        </div> --}}
+                                                        <div class="col-sm-2">
+                                                            <input type="text" name="box_filter" id="box_filter"
+                                                                placeholder="cari Nama Box" class="form-control"
+                                                                @if ($request->box_filter) value="{{ $request->box_filter }}" @endif>
+                                                        </div>
                                                         <div class="col-sm-1">
                                                             <button type="submit" class="btn btn-primary">Cari</button>
                                                         </div>
@@ -77,8 +80,8 @@
                                                 <tr class="text-center align-middle">
                                                     <th class="text-center align-middle">No</th>
                                                     <th class="text-center align-middle">Kab</th>
-                                                    <th class="text-center align-middle">No Box</th>
-                                                    <th class="text-center align-middle">Jumlah SLS</th>
+                                                    <th class="text-center align-middle">Nama Box</th>
+                                                    <th class="text-center align-middle">Jumlah Dokument</th>
                                                     <th class="text-center align-middle">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -88,23 +91,28 @@
                                                         <td class="text-center align-middle">
                                                             {{ ++$key }}</td>
                                                         <td class="align-middle text-center">
-                                                            {{ $dt->id_kab }}
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            {{ $dt->nama }}
+                                                            {{ $dt->kd_kab }}
                                                         </td>
                                                         <td class="align-middle">
                                                             {{ $dt->nama }}
                                                         </td>
                                                         <td class="align-middle text-center">
+                                                            {{ count($dt->p_kabkot) }}
+                                                        </td>
+                                                        <td class="align-middle text-center">
                                                             <a href="{{ url('box_besar/' . $dt->id) }}"
-                                                                class="btn btn-sm btn-outline-info"><i
+                                                                class="btn btn-sm btn-outline-info mb-1"><i
                                                                     class="fa fa-eye"></i></a>
-                                                            <button class="btn btn-outline-warning btn-sm btn_edit"
+                                                            <button class="btn btn-outline-warning btn-sm btn_edit  mb-1"
                                                                 data-bs-target="#modal_edit" data-bs-toggle="modal"
                                                                 data-id="{{ $dt->id }}">
                                                                 <i class="fa fa-pencil"></i>
                                                             </button>
+                                                            <br>
+                                                            <a class="btn btn-outline-info btn-sm " target="_blank"
+                                                                href="{{ url('printbox/') . '/' . $dt->id }}">
+                                                                <i class="fa fa-print"></i>
+                                                            </a>
                                                             <button class="btn btn-outline-danger btn-sm btn_hapus"
                                                                 data-bs-target="#modal_hapus" data-bs-toggle="modal"
                                                                 data-id="{{ $dt->id }}">
@@ -152,11 +160,36 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modal_edit">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Hapus<span></span></h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url('box_besar/') }}" method="post" id="form_edit">
+                            @csrf
+                            @method('put')
+                            <div class="row ">
+                                <input type="text" name="id" id="hapus_id" hidden>
+                                <h6>Hapus box ini?</h6>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" form="form_hapus">Submit</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="modal_tambah">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah Dokumen Diterima<span></span></h4>
+                        <h4 class="modal-title">Tambah Box Besar<span></span></h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
@@ -176,14 +209,15 @@
                                 </div>
                                 <div class="col-6">
                                     <label for="tambah_box" class="form-label">Nomor box</label>
-                                    <div class="input-group mb-3">
+                                    <div class="input-group mb-3" aria-describedby="namahelp">
                                         <span class="input-group-text" id="basic-addon1">0</span>
                                         <input type="text" class="form-control" placeholder="nomor"
-                                            aria-label="nomor" aria-describedby="basic-addon1" name="no_box"
-                                            id="tambah_box">
+                                            aria-label="nomor" name="no_box" id="tambah_box" required>
                                     </div>
-                                </div>
+                                    <div id="namahelp" class="form-text">contoh : 0001 , 0025
+                                    </div>
 
+                                </div>
                         </form>
                     </div>
                     <div class="modal-footer">

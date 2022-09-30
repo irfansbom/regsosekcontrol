@@ -17,13 +17,31 @@ class UserController extends Controller
 {
     //
 
-    public function index()
+    public function index(Request $request)
     {
-        Paginator::useBootstrap();
         $auth = Auth::user();
-        $user = User::orderBy('name')->paginate(15);
+        $kabs = Kabs::all();
+
+        if ($auth->kd_wilayah == '00') {
+            $kab = "";
+            if ($request->kab_filter) {
+                $kab = $request->kab_filter;
+            }
+            $kabs = Kabs::all();
+        } else {
+            $kab = $auth->kd_wilayah;
+            $kabs = Kabs::where('id_kab', $auth->kd_wilayah)->get();
+        }
+        $role = Role::all();
+        if ($request->role_filter) {
+            $role = $request->role_filter;
+        }
+        $user = User::where('kd_wilayah', 'LIKE', '%' . $kab . '%')
+            ->role($role)
+            ->where('name', 'LIKE', '%' . $request->nama_filter . '%')
+            ->paginate(15);
         $data_roles = Role::all();
-        return view('user.index', compact('user', 'data_roles', 'auth'));
+        return view('user.index', compact('user', 'data_roles', 'auth', 'kabs', 'request'));
     }
 
     public function create()
